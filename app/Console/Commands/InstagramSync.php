@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Providers\InstaSyncProvider;
 use Illuminate\Console\Command;
 
 class InstagramSync extends Command
@@ -11,7 +12,7 @@ class InstagramSync extends Command
      *
      * @var string
      */
-    protected $signature = 'command:name';
+    protected $signature = 'instasync:process';
 
     /**
      * The console command description.
@@ -20,14 +21,17 @@ class InstagramSync extends Command
      */
     protected $description = 'Command description';
 
+    /** @var InstaSyncProvider */
+    protected $syncProvider;
+
     /**
      * Create a new command instance.
-     *
-     * @return void
      */
     public function __construct()
     {
         parent::__construct();
+
+        $this->syncProvider = app()->make('InstaSync');
     }
 
     /**
@@ -37,6 +41,6 @@ class InstagramSync extends Command
      */
     public function handle()
     {
-        //
+        $this->syncProvider->sync();
     }
 }
